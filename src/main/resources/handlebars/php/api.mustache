@@ -100,6 +100,7 @@ use {{invokerPackage}}\ObjectSerializer;
     public function {{operationId}}({{#allParams}}${{paramName}}{{^required}} = {{#defaultValue}}'{{{.}}}'{{/defaultValue}}{{^defaultValue}}null{{/defaultValue}}{{/required}}{{#has this 'more'}}, {{/has}}{{/allParams}})
     {
         {{#returnType}}list($response) = {{/returnType}}$this->{{operationId}}WithHttpInfo({{#allParams}}${{paramName}}{{#has this 'more'}}, {{/has}}{{/allParams}});{{#returnType}}
+
         return $response;{{/returnType}}
     }
 
@@ -488,6 +489,7 @@ use {{invokerPackage}}\ObjectSerializer;
         );
 
         $query = \GuzzleHttp\Psr7\build_query($queryParams);
+
         return new Request(
             '{{httpMethod}}',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
