@@ -16,7 +16,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
       */
     protected static $swaggerTypes = [
         {{#vars}}
-        '{{name}}' => '{{{datatype}}}'{{#has this 'more'}},{{/has}}
+        '{{name}}' => '{{{datatype}}}',
         {{/vars}}
     ];
 
@@ -27,7 +27,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
       */
     protected static $swaggerFormats = [
         {{#vars}}
-        '{{name}}' => {{#dataFormat}}'{{{dataFormat}}}'{{/dataFormat}}{{^dataFormat}}null{{/dataFormat}}{{#has this 'more'}},{{/has}}
+        '{{name}}' => {{#dataFormat}}'{{{dataFormat}}}'{{/dataFormat}}{{^dataFormat}}null{{/dataFormat}},
         {{/vars}}
     ];
 
@@ -59,7 +59,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     protected static $attributeMap = [
         {{#vars}}
-        '{{name}}' => '{{baseName}}'{{#has this 'more'}},{{/has}}
+        '{{name}}' => '{{baseName}}',
         {{/vars}}
     ];
 
@@ -70,7 +70,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     protected static $setters = [
         {{#vars}}
-        '{{name}}' => '{{setter}}'{{#has this 'more'}},{{/has}}
+        '{{name}}' => '{{setter}}',
         {{/vars}}
     ];
 
@@ -81,7 +81,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     protected static $getters = [
         {{#vars}}
-        '{{name}}' => '{{getter}}'{{#has this 'more'}},{{/has}}
+        '{{name}}' => '{{getter}}',
         {{/vars}}
     ];
 
