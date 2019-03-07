@@ -350,29 +350,6 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     public function {{setter}}(${{name}})
     {
-        {{#is this 'enum'}}
-        $allowedValues = $this->{{getter}}AllowableValues();
-        {{#isNot this 'container'}}
-        if ({{^required}}!is_null(${{name}}) && {{/required}}!in_array(${{{name}}}, $allowedValues)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value for '{{name}}', must be one of '%s'",
-                    implode("', '", $allowedValues)
-                )
-            );
-        }
-        {{/isNot}}
-        {{#is this 'container'}}
-        if ({{^required}}!is_null(${{name}}) && {{/required}}array_diff(${{{name}}}, $allowedValues)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value for '{{name}}', must be one of '%s'",
-                    implode("', '", $allowedValues)
-                )
-            );
-        }
-        {{/is}}
-        {{/is}}
         {{#has this 'validation'}}
         {{#maxLength}}
         if ({{^required}}!is_null(${{name}}) && {{/required}}(strlen(${{name}}) > {{maxLength}})) {
