@@ -272,7 +272,12 @@ class ObjectSerializer
         } else {
             // If a discriminator is defined and points to a valid subclass, use it.
             $discriminator = $class::DISCRIMINATOR;
-            if (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
+            if ($discriminatorClass = static::getDiscriminatorClass($discriminator, $data)) {
+                $subclass = '{{backslash}}{{invokerPackage}}\Model\\' . $discriminatorClass;
+                if (is_subclass_of($subclass, $class)) {
+                    $class = $subclass;
+                }
+            } elseif (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
                 $subclass = '{{backslash}}{{invokerPackage}}\Model\\' . $data->{$discriminator};
                 if (is_subclass_of($subclass, $class)) {
                     $class = $subclass;
@@ -294,5 +299,34 @@ class ObjectSerializer
 
             return $instance;
         }
+    }
+
+
+    /**
+     * Try to "fix" the discriminator value to get a correct discriminator class from the configuration
+     *
+     * @param mixed $discriminator
+     * @param mixed $data
+     *
+     * @return null|string
+     */
+    public static function getDiscriminatorClass($discriminator, $data)
+    {
+        if (is_string($discriminator) && is_object($data) && preg_match('/^Discriminator{(?<discriminator>.*)}$/', html_entity_decode($discriminator), $matches)) {
+            $discriminatorFields = $matches['discriminator'];
+
+            if (preg_match('/propertyName=&#x27;(?<field>.*)&#x27;/', $discriminatorFields, $matches)) {
+                $field = trim($matches['field']);
+                $value = $data->{$field} ?? null;
+
+                $pattern = sprintf('/mapping={.*%s=(?<class>.+?)\W/', preg_quote($value));
+
+                if (!empty($field) && !empty($value) && preg_match($pattern, $discriminatorFields, $matches)) {
+                    return $matches['class'];
+                }
+            }
+        }
+
+        return null;
     }
 }
