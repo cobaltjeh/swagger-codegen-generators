@@ -301,7 +301,6 @@ class ObjectSerializer
         }
     }
 
-
     /**
      * Try to "fix" the discriminator value to get a correct discriminator class from the configuration
      *
@@ -317,7 +316,7 @@ class ObjectSerializer
 
             if (preg_match('/propertyName=&#x27;(?<field>.*)&#x27;/', $discriminatorFields, $matches)) {
                 $field = trim($matches['field']);
-                $value = $data->{$field} ?? null;
+                $value = isset($data->{$field}) ? $data->{$field} : null;
 
                 $pattern = sprintf('/mapping={.*%s=(?<class>.+?)\W/', preg_quote($value));
 
